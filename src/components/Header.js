@@ -1,7 +1,7 @@
 import React from "react"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
-const Header = () => {
+const Header = ({handleLogout}) => {
     return (
         <div className="header">
             <div className="container">
@@ -9,10 +9,10 @@ const Header = () => {
                     <div className="container-fluid">
                         <Link className="navbar-brand" to="/">
                             <div className="d-flex align-items-center">
-                            <i className="fas fa-home"></i>
+                                <i className="fas fa-home"></i>
                                 <span className="ms-2">
                                     Roomye
-                           </span>
+                                </span>
                             </div>
                         </Link>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,10 +24,10 @@ const Header = () => {
                                     <Link className="nav-link" to="/">Home</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link  className="nav-link" to="/postroom">Post a Room</Link>
+                                    <Link className="nav-link" to="/postroom">Post a Room</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link  className="nav-link" to="/profile">Profile</Link>
+                                    <Link className="nav-link" to="/profile">Profile</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="#">Category <i className="fas fa-chevron-down"></i></Link>
@@ -40,6 +40,15 @@ const Header = () => {
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/contact">Contact</Link>
                                 </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/"
+                                    onClick={async (e) => {
+                                        e.preventDefault();
+                                        await handleLogout();
+                                    }}
+                                    >Logout</Link>
+                                </li>
+                                
                             </ul>
                         </div>
                     </div>

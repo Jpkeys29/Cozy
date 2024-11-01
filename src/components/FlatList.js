@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Title from "./Title"
-// import FlatItem from "./FlatItem"
-// import FlatDetail from "./FlatDetail";
+import FlatItem from "./FlatItem"
+import FlatDetail from "./FlatDetail";
 
 const FlatList = () => {
     const [area, setArea] = useState([])
@@ -18,10 +18,6 @@ const FlatList = () => {
                 // console.log(result)
                 setArea(result)
                 console.log(result.postings)
-                if (result.postings) {
-                    const areaList = result.postings.map(posting => posting.area);
-                    setArea(areaList);
-                }
             } catch (error) {
                 console.log('Error fetching area or neighborhood:', error);
             }
@@ -33,6 +29,7 @@ const FlatList = () => {
     const handleLocationChange = (e) => {
         setSearchTerm(e.target.value);
     }
+    console.log(area);
     return (
         <section>
             {/* <input
@@ -50,20 +47,30 @@ const FlatList = () => {
             <Title title={title.text} description={title.description} />
 
             {/* <ul>
-                {area.length === 0 ? (<p>Loading...</p>) : (area.slice(0,5).map((l, index) => (
-                <li key={l.id || index }>{l.area} </li>
-            ))) }
+                {area.length === 0 ? (<p>Loading...</p>) : (area.postings.slice(0, 10).map((l, index) => (
+                    // <li key={l.id || index}>{l.area} {l.neighborhood} </li>
+                    // <div className="container" key={l.id || index}>
+                        <div className="row">
+                            <FlatItem slug={l.slug || `${index + 1}`} />
+                                <p>Area: {l.area} </p>
+                        </div>
+                    //  </div>
+                
+                )))}
             </ul> */}
-            {/* <div className="container"> */}
-            {/* <div className="row">
+            {/* <FlatDetail /> */}
+            {/* <FlatItem /> */}
+
+            <div className="container">
+                <div className="row">
                     <FlatItem slug="lorem-ipsum-1" />
                     <FlatItem slug="lorem-ipsum-2" />
                     <FlatItem slug="lorem-ipsum-3" />
                     <FlatItem slug="lorem-ipsum-4" />
                     <FlatItem slug="lorem-ipsum-5" />
-                    <FlatItem slug="lorem-ipsum-6" />  
-                </div> */}
-            {/* </div> */}
+                    <FlatItem slug="lorem-ipsum-6" />
+                </div>
+            </div>
         </section>
     )
 

@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy import create_engine
 app = Flask(__name__)
 CORS(app)
+from sqlalchemy import Enum
 
 
 db_password = os.environ['DB_PSSWRD']
@@ -38,6 +39,13 @@ class Roomie1(db.Model):
     #         "neighborhood": self.neighborhood
     #     }
 
+class Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.Text, unique=True, nullable=False)
+    photo= db.Column(db.String(255), nullable=True)
+    gender= db.Column(Enum('male','female','other', name='gender_enum'), nullable=False)
+    occupation= db.Column(Enum('professional','student','other', name='profession_enum'), nullable=False)
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -45,7 +53,8 @@ def home():
 
 @app.route('/api/get_posting', methods=['GET'])
 def get_posting():
-    posting_list = Roomie1.query.limit(15).all()
+    # posting_list = Roomie1.query.limit(15).all()
+    posting_list = Roomie1.query.all()
     if posting_list :
         postings = []
         for posting in posting_list:
@@ -53,6 +62,54 @@ def get_posting():
         return jsonify({'postings': postings})
     else:
         return jsonify({'message' : 'Not able to fetch posting'})
+    
+def check_address_db(formatted_address):
+    address = Roomie1.query.filter(
+        (Roomie1.area == formatted_address) | (Roomie1.neighborhood == formatted_address)
+    ).first()
+    return address
+
+@app.route('/api/check_address', methods=['POST'])
+def check_address():
+    data = request.get_json()
+    if data is None:
+        return jsonify({"message:" "Invalid json"})
+    print("Received data:", data)
+    formatted_address = data.get('formattedAddress')
+
+    if formatted_address:
+        address = check_address_db(formatted_address) 
+
+        if address:
+            return jsonify({
+                "area": address.area,
+                "neighborhood": address.neighborhood,
+            }), 200
+        else:
+            return jsonify({"message": "Address not found"}), 404
+    else:
+        return jsonify({"message": "No address provided"}),404
+
+
+@app.route("/api/add_profile", methods=["POST"])
+def add_profile():
+    try:
+        profile_data = request.get_json()
+        print(profile_data)
+
+        name = profile_data.get('name')
+        photo= profile_data.get('photo')
+        gender = profile_data.get('gender')
+        occupation = profile_data.get('occupation')
+
+        new_profile = Profile(name=name, photo=photo, gender=gender, occupation=occupation)
+        db.session.add(new_profile)
+        db.session.commit()
+
+        return jsonify({'message': 'Profile added successfully'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
     
 @app.route('/api/input_area_neighborhood', methods=['GET'])
 def area_neighborhood():
