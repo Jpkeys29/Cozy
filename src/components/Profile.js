@@ -15,7 +15,7 @@ const Profile = () => {
 
     const addUserProfile = async (userProfile) => {
         try {
-            const response = await fetch(" ", {
+            const response = await fetch("http://127.0.0.1:5000/api/add_profile", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -23,24 +23,35 @@ const Profile = () => {
                 body: JSON.stringify(userProfile),
             });
             if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`POST request failed: ${errorText}`)
                 throw new Error('POST request failed')
             }
             const jsonResponse = await response.json();
             const data = await jsonResponse;
             setUserProfile(data);
+        navigate('/')
 
         } catch (error) {
             console.log(error)
         }
     }
 
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setUserProfile({...userProfile, [name]: value})
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        await addUserProfile(userProfile)
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUserProfile({ ...userProfile, [name]: value })
+    }
+
+    const handleRadioButton = (e) => {
+        const { name, value } = e.target
+        setUserProfile({
+            ...userProfile, [name]: value,
+        })
     }
 
     return (
@@ -61,22 +72,32 @@ const Profile = () => {
                 <div className="form-card">
                     <div className="form-card-content">
                         <label className="form-label"> Name: </label>
-                        <input className="form-input"
+                        <input
+                            className="form-input"
+                            type="text"
+                            name="name"
+                            onChange={handleInputChange}
+                            required
                         />
                         <label className="form-label"> Email:</label>
-                        <input className="form-input"
+                        <input
+                            className="form-input"
+                            type="text"
+                            name="email"
+                            onChange={handleInputChange}
+                            required
                         />
                         <label className="form-label"> Photo:</label>
                         <div className="avatar-upload">
-                            <div className="avatar-preview" id="avatar-preview">
-                                <img id="avatar-image" src="default-avatar.jpeg" alt="T" />
-                            </div>
                             <input type="file" id="avatar-input" accept="image/*" onChange={null} />
                         </div>
 
                         <div >
                             <label className="form-label"> Gender:</label>
-                            <div className="radio-group">
+                            <div
+                                className="radio-group"
+                                onChange={handleRadioButton}
+                            >
                                 <label>
                                     <input type="radio" name="gender" value="female" />
                                     Female
@@ -90,8 +111,12 @@ const Profile = () => {
                                     Other
                                 </label>
                             </div>
+
                             <label className="form-label"> Ocupation:</label>
-                            <div className="radio-group">
+                            <div
+                                className="radio-group"
+                                onChange={handleRadioButton}
+                            >
                                 <label>
                                     <input type="radio" name="occupation" value="professional" />
                                     Professional
@@ -106,6 +131,7 @@ const Profile = () => {
                                 </label>
                             </div>
                         </div>
+                        <button onClick={handleSubmit}>Create</button>
                     </div>
                 </div>
                 {/* </div> */}
@@ -117,9 +143,3 @@ const Profile = () => {
 export default Profile
 
 
-{/* <div className="title">
-                                    Lorem ipsum dolor sit amet
-                            </div> */}
-{/* <div className="about-text">
-                                    Lorem ipsum is simply free text dolor sit am adipi we help you ensure everyone is in the right jobs sicing elit, sed do consulting firms Et leggings across the nation tempor.
-                            </div> */}

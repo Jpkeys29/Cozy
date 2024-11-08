@@ -27,24 +27,13 @@ class Roomie1(db.Model):
     area=db.Column(db.String(50))
     neighborhood=db.Column(db.String(50))
 
-    # def to_json(self):
-    #     return {
-    #         "id": self.id,
-    #         "title": self.title,
-    #         "description": self.description,
-    #         "image": self.image,
-    #         "price": self.price,
-    #         "availability": self.availability,
-    #         "area": self.area,
-    #         "neighborhood": self.neighborhood
-    #     }
-
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.Text, unique=True, nullable=False)
+    name=db.Column(db.String(45), unique=True, nullable=False)
+    email= db.Column(db.String(255), unique=True, nullable=False)
     photo= db.Column(db.String(255), nullable=True)
     gender= db.Column(Enum('male','female','other', name='gender_enum'), nullable=False)
-    occupation= db.Column(Enum('professional','student','other', name='profession_enum'), nullable=False)
+    occupation= db.Column(Enum('professional','student','other', name='occupation_enum'), nullable=False)
 
 
 @app.route('/', methods=['GET'])
@@ -90,6 +79,29 @@ def check_address():
     else:
         return jsonify({"message": "No address provided"}),404
 
+@app.route("/api/add_posting", methods=["POST"])
+def add_posting():
+    try:
+        posting_data = request.get_json()
+        print(posting_data)
+
+        title = posting_data.get('title')
+        description = posting_data('description')
+        image = posting_data('image')
+        price = posting_data('price')
+        availability = posting_data('availability')
+        area = posting_data('area')
+        neighborhood = posting_data('neighborhood')
+
+        new_posting = Roomie1(title=title, description=description, image=image, price=price, availability=availability, area=area, neighborhood=neighborhood)
+
+        db.session.add(new_posting)
+        db.session.commit()
+        return jsonify({'message': 'Posting added successfully'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route("/api/add_profile", methods=["POST"])
 def add_profile():
@@ -98,14 +110,14 @@ def add_profile():
         print(profile_data)
 
         name = profile_data.get('name')
+        email = profile_data.get('email')
         photo= profile_data.get('photo')
         gender = profile_data.get('gender')
         occupation = profile_data.get('occupation')
 
-        new_profile = Profile(name=name, photo=photo, gender=gender, occupation=occupation)
+        new_profile = Profile(name=name, email=email, photo=photo, gender=gender, occupation=occupation)
         db.session.add(new_profile)
         db.session.commit()
-
         return jsonify({'message': 'Profile added successfully'}), 201
     except Exception as e:
         db.session.rollback()

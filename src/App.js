@@ -40,7 +40,7 @@ function App() {
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/blog/:id" element={<BlogDetail />}></Route>
           <Route path="/flat/:slug" element={<FlatDetail />}></Route>
-          <Route path='/signup' element={<SignUp />} ></Route>
+          <Route path='/signup' element={<SignUp setUser={setUser} />} ></Route>
           {/* <Route path="/postroom" element={<PostRoom />}></Route> */}
           <Route
             path="/postroom"
