@@ -1,7 +1,8 @@
 import Title from "./Title"
 // import TeamItem from "./TeamItem"
+import Banner from "./Banner"
 
-const TeamList = () => {
+const TeamList = ({ addressData }) => {
     const title = {
         text: "TeamList",
         description: "Lorem ipsum dolor sit ame"
@@ -10,6 +11,14 @@ const TeamList = () => {
         <section className="section-teams">
             <div className="container">
                 <Title title={title.text} description={title.description} />
+                <div>
+                    <p>
+                        {addressData?.area}
+                        <br />
+                        {addressData?.neighborhood}
+                    </p>
+                </div>
+
                 {/* <div className="row">
                     <TeamItem/>
                     <TeamItem/>

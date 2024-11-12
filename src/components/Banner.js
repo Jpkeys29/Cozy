@@ -1,18 +1,21 @@
 import { useEffect, useState, useRef } from "react"
 import banner from "../banner.jpg"
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
 import {
     GoogleMap,
     useJsApiLoader,
     StandaloneSearchBox,
 } from "@react-google-maps/api"
 import { useNavigate, Navigate } from "react-router-dom"
+import TeamList from "./TeamList";
+
 
 const libraries = ["places"]
 
 const Banner = () => {
     const [addressData, setAddressData] = useState(null);
     const [pics, setPics] = useState([])
+    const [ updatedFormattedAddres, setUpdatedFormattedAddress ] = useState('')
 
     const apiKey = process.env.REACT_APP_GOOGLEMAPS_API_KEY;
     const inputref = useRef(null)
@@ -25,22 +28,21 @@ const Banner = () => {
     const handleOnPlacesChanged = () => {
         let address = inputref.current.getPlaces()
         console.log("address:", address)
+
         if (address && address.length > 0) {
-            // const formattedAddress = address[0].formatted_address
-            const formattedAddress = address[0].vicinity;
+            const formattedAddress = address[0].vicinity
             console.log("Formatted Address:", formattedAddress);
-            console.log("FormattedAddress type:", typeof formattedAddress);
-            FetchFormattedAddress(formattedAddress);
+            setUpdatedFormattedAddress(formattedAddress)
         } else {
             console.log('No address found')
         }
     }
 
-    const FetchFormattedAddress = async (formattedAddress) => {
-        console.log(formattedAddress);
-        console.log(typeof formattedAddress);
+    const FetchFormattedAddress = async () => {
+        console.log(updatedFormattedAddres);
+        console.log(typeof updatedFormattedAddres);
         const dataObject = {
-            formattedAddress: formattedAddress,
+            formattedAddress: updatedFormattedAddres,
         };
 
         try {
@@ -86,10 +88,14 @@ const Banner = () => {
                                     <button className="btn-search m-2" onClick={FetchFormattedAddress}
                                     >Search All</button>
                                 </div>
+                                
                                 <div>
-                                    <p>{addressData} </p>
+                                    <p>
+                                        {addressData?.area}
+                                        <br />
+                                        {addressData?.neighborhood}
+                                    </p>
                                 </div>
-
                             </div>
                         </div>
                     </div>
