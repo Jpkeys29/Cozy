@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { getAuth, getIdToken } from "firebase/auth"
 
 const Profile = () => {
     const [userProfile, setUserProfile] = useState({
@@ -15,12 +16,20 @@ const Profile = () => {
 
     const addUserProfile = async (userProfile) => {
         try {
+            const formData = new FormData();
+
+            Object.entries(userProfile).forEach(([key, value]) => {
+                formData.append(key, value);
+            })
+
             const response = await fetch("http://127.0.0.1:5000/api/add_profile", {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userProfile),
+                body: formData
+                // headers: {
+                //     'Content-Type': 'application/json'
+                //     // 'Authorization': `Bearer ${token}`
+                // },
+                // body: JSON.stringify(userProfile),
             });
             if (!response.ok) {
                 const errorText = await response.text();
@@ -34,6 +43,20 @@ const Profile = () => {
 
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const handlePhotoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setUserProfile(prevState => ({
+                    ...prevState,
+                    photo: file,
+                }));
+            };
+            reader.readAsDataURL(file);
         }
     }
 
@@ -89,7 +112,11 @@ const Profile = () => {
                         />
                         <label className="form-label"> Photo:</label>
                         <div className="avatar-upload">
-                            <input type="file" id="avatar-input" accept="image/*" onChange={null} />
+                            <input
+                             type="file"
+                              id="avatar-input"
+                               accept="image/*" 
+                               onChange={handlePhotoUpload} />
                         </div>
 
                         <div >

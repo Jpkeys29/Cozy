@@ -10,6 +10,9 @@ app = Flask(__name__)
 CORS(app)
 from sqlalchemy import Enum
 
+app = Flask(__name__)
+CORS(app)
+
 
 db_password = os.environ['DB_PSSWRD']
 app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+mysqlconnector://root:{db_password}@localhost/hommie1"
@@ -105,17 +108,38 @@ def add_posting():
 
 @app.route("/api/add_profile", methods=["POST"])
 def add_profile():
-    try:
-        profile_data = request.get_json()
-        print(profile_data)
+    # try:
+    #     profile_data = request.get_json()
+    #     print(profile_data)
 
-        name = profile_data.get('name')
-        email = profile_data.get('email')
-        photo= profile_data.get('photo')
-        gender = profile_data.get('gender')
-        occupation = profile_data.get('occupation')
+    #     name = profile_data.get('name')
+    #     email = profile_data.get('email')
+    #     photo= profile_data.get('photo')
+    #     gender = profile_data.get('gender')
+    #     occupation = profile_data.get('occupation')
 
-        new_profile = Profile(name=name, email=email, photo=photo, gender=gender, occupation=occupation)
+    #     new_profile = Profile(name=name, email=email, photo=photo, gender=gender, occupation=occupation)
+    #     db.session.add(new_profile)
+    #     db.session.commit()
+    #     return jsonify({'message': 'Profile added successfully'}), 201
+    try: 
+        upload_folder = 'uploads'
+
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
+            
+        print(request.files)
+        name = request.form.get('name')
+        email = request.form.get('email')
+        gender = request.form.get('gender')
+        occupation = request.form.get('occupation')
+        photo = request.files.get('photo')
+        photo_path = None
+        if photo:
+            photo_path = os.path.join('uploads', photo.filename)
+            photo.save(photo_path)
+
+        new_profile = Profile(name=name, email=email, photo=photo_path, gender=gender, occupation=occupation)
         db.session.add(new_profile)
         db.session.commit()
         return jsonify({'message': 'Profile added successfully'}), 201
