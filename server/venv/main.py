@@ -61,6 +61,21 @@ def check_address_db(formatted_address):
     ).first()
     return address
 
+@app.route('/api/get_profile/<int:profile_id>', methods=['GET'])
+def get_profile(profile_id):
+    profile = Profile.query.get(profile_id)
+    if profile is None:
+        return jsonify({"error": "Profile not found"}), 404
+    profile_data = {
+            "id": profile.id,
+            "name": profile.name,
+            "email": profile.email,
+            "photo": profile.photo,
+            "gender": profile.gender,
+            "occupation": profile.occupation
+        }
+    return jsonify(profile_data)
+
 @app.route('/api/check_address', methods=['POST'])
 def check_address():
     data = request.get_json()
@@ -108,26 +123,12 @@ def add_posting():
 
 @app.route("/api/add_profile", methods=["POST"])
 def add_profile():
-    # try:
-    #     profile_data = request.get_json()
-    #     print(profile_data)
-
-    #     name = profile_data.get('name')
-    #     email = profile_data.get('email')
-    #     photo= profile_data.get('photo')
-    #     gender = profile_data.get('gender')
-    #     occupation = profile_data.get('occupation')
-
-    #     new_profile = Profile(name=name, email=email, photo=photo, gender=gender, occupation=occupation)
-    #     db.session.add(new_profile)
-    #     db.session.commit()
-    #     return jsonify({'message': 'Profile added successfully'}), 201
     try: 
         upload_folder = 'uploads'
 
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
-            
+
         print(request.files)
         name = request.form.get('name')
         email = request.form.get('email')

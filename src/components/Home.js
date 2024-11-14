@@ -3,7 +3,6 @@ import Banner from "./Banner"
 import React from "react"
 import TeamList from "./TeamList"
 import References from "./References"
-import Subscribe from "./Subscribe"
 import BestFlatList from "./BestFlatList"
 
 const Home=()=>{
@@ -11,10 +10,9 @@ const Home=()=>{
         <React.Fragment>
             <Banner/>
             {/* <FlatList/> */}
-            <BestFlatList/>
-            <Subscribe/>
+            {/* <BestFlatList/> */}
             <TeamList/>
-            <References/>
+            <References />
         </React.Fragment>
     )
 }

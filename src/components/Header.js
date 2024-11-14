@@ -30,14 +30,6 @@ const Header = ({handleLogout}) => {
                                     <Link className="nav-link" to="/profile">Profile</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="#">Category <i className="fas fa-chevron-down"></i></Link>
-                                    <ul className="sub-ul">
-                                        <li><Link to="#">item</Link></li>
-                                        <li><Link to="#">item</Link></li>
-                                        <li><Link to="#">item</Link></li>
-                                    </ul>
-                                </li>
-                                <li className="nav-item">
                                     <Link className="nav-link" to="/contact">Contact</Link>
                                 </li>
                                 <li className="nav-item">
