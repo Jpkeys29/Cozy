@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import Title from "./Title"
 // import BestFlatItem from "./BestFlatItem"
+// import Banner from "./Banner";
 
 export default class BestFlatList extends Component {
-    render() {
+    render(addressData, setAddressData) {
         const title = {
             text: "BestFlatList",
             description: "Lorem ipsum dolor sit ame"
@@ -38,19 +39,22 @@ export default class BestFlatList extends Component {
             ]
         };
         return (
-            <section className="section-best-estate"> 
+            <section className="section-best-estate">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12">
-                            <Title title={title.text} description={title.description} />
-                            <Slider {...settings}>
-                                {/* <BestFlatItem flatState="For Rent"  />
+                            {/* <Title title={title.text} description={title.description} /> */}
+                            <div>
+                                {/* <Banner /> */}
+                            </div>
+                            {/* <Slider {...settings}> */}
+                            {/* <BestFlatItem flatState="For Rent"  />
                                 <BestFlatItem flatState="For Sale"  />
                                 <BestFlatItem flatState="For Rent"  />
                                 <BestFlatItem flatState="For Rent"  />
                                 <BestFlatItem flatState="For Sale"  />
                                 <BestFlatItem flatState="For Rent"  /> */}
-                            </Slider>
+                            {/* </Slider> */}
                         </div>
                     </div>
                 </div>

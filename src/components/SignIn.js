@@ -5,8 +5,8 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { Link as RouterLink } from 'react-router-dom';
 
-const SignIn = ({ setUser }) => {
 
+const SignIn = ({ setUser }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
@@ -67,7 +67,7 @@ const SignIn = ({ setUser }) => {
                 <button type="submit" className="btn-submit" onClick={validateInputs}>Login</button>
                 <p>Don't have an account? </p>
                 <span>
-                    <Link component={RouterLink} to={"/signup"} >SignUp</Link>{" "}
+                    <Link component={RouterLink} to={"/signup"} >SignUp</Link>{" "}   
                 </span>
 
 
