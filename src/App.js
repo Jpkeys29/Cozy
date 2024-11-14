@@ -8,13 +8,13 @@ import Contact from "./components/Contact"
 import Profile from "./components/Profile"
 import PostRoom from "./components/PostRoom"
 import SignUp from './components/SignUp';
-import BlogDetail from "./components/BlogDetail"
 import { Routes, Route } from "react-router-dom";
 import { auth } from "./firebase/config"
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { Link, useParams } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom';
 import SignIn from './components/SignIn';
+import RenderedProfile from './components/RenderedProfile';
 
 function App() {
   console.log("auth", auth.currentUser)
@@ -38,9 +38,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
-          <Route path="/blog/:id" element={<BlogDetail />}></Route>
           <Route path="/flat/:slug" element={<FlatDetail />}></Route>
           <Route path='/signup' element={<SignUp setUser={setUser} />} ></Route>
+          {/* <Route path='/renderedprofile' element={<RenderedProfile/>} /> */}
           {/* <Route path="/postroom" element={<PostRoom />}></Route> */}
           <Route
             path="/postroom"
@@ -48,7 +48,6 @@ function App() {
               user ? (<PostRoom />) : (
                 <>
                   <SignIn setUser={setUser} />
-                  {/* <SignUp setUser={setUser}/> */}
                 </>
               )
             }>
