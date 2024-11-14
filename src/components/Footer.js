@@ -26,17 +26,8 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-6">
-                        <div>
-                            <p className="footer-title">Categories</p>
-                            <ul className="footer-ul">
-                                <li>Category 1</li>
-                                <li>Category 2</li>
-                                <li>Category 3</li>
-                                <li>Category 4</li>
-                            </ul>
-                        </div>
+                        
                     </div>
-
                     <div className="col-lg-3 col-md-6">
                         <p className="footer-title">Contact</p>
                         <ul className="footer-ul">
