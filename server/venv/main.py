@@ -55,15 +55,11 @@ def get_posting():
     else:
         return jsonify({'message' : 'Not able to fetch posting'})
     
-def check_address_db(formatted_address):
-    address = Roomie1.query.filter(
-        (Roomie1.area == formatted_address) | (Roomie1.neighborhood == formatted_address)
-    ).first()
-    return address
 
 @app.route('/api/get_profile/<int:profile_id>', methods=['GET'])
 def get_profile(profile_id):
     profile = Profile.query.get(profile_id)
+    print(profile)
     if profile is None:
         return jsonify({"error": "Profile not found"}), 404
     profile_data = {
@@ -76,12 +72,18 @@ def get_profile(profile_id):
         }
     return jsonify(profile_data)
 
+def check_address_db(formatted_address):
+    address = Roomie1.query.filter(
+        (Roomie1.area == formatted_address) | (Roomie1.neighborhood == formatted_address)
+    ).first()
+    return address
+
 @app.route('/api/check_address', methods=['POST'])
 def check_address():
     data = request.get_json()
     if data is None:
         return jsonify({"message:" "Invalid json"})
-    print("Received data:", data)
+    # print("Received data:", data)
     formatted_address = data.get('formattedAddress')
 
     if formatted_address:
@@ -91,6 +93,10 @@ def check_address():
             return jsonify({
                 "area": address.area,
                 "neighborhood": address.neighborhood,
+                "price": address.price,
+                "title": address.title,
+                "description": address.description,
+                "image": address.image
             }), 200
         else:
             return jsonify({"message": "Address not found"}), 404
@@ -124,6 +130,16 @@ def add_posting():
 @app.route("/api/add_profile", methods=["POST"])
 def add_profile():
     try: 
+        auth_header = request.headers.get('Authorization')
+        access_token = None
+        if auth_header and auth_header.startswith("Bearer"):
+            access_token = auth_header.split(" ")[1]
+
+            if access_token:
+                print("Received accessToken:", access_token)
+            else:
+                print("No accessToken provided")
+                
         upload_folder = 'uploads'
 
         if not os.path.exists(upload_folder):
@@ -148,29 +164,27 @@ def add_profile():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
     
-@app.route('/api/input_area_neighborhood', methods=['GET'])
-def area_neighborhood():
-    data = request.get_json()
-    area = data.get('area')
-    neighborhood = data.get('neighborhood')
-    query = Roomie1.query
-    if area:
-        query = query.filter_by(area=area)
-    if neighborhood:
-        query = query.filter_by(neighborhood=neighborhood)
+# @app.route('/api/input_area_neighborhood', methods=['GET'])
+# def area_neighborhood():
+#     data = request.get_json()
+#     area = data.get('area')
+#     neighborhood = data.get('neighborhood')
+#     query = Roomie1.query
+#     if area:
+#         query = query.filter_by(area=area)
+#     if neighborhood:
+#         query = query.filter_by(neighborhood=neighborhood)
 
-    posting_list = query.limit(10).all
+#     posting_list = query.limit(10).all
 
-    if posting_list :
-        postings = []
-        for posting in posting_list:
-            postings.append({'title': posting.title, 'description' : posting.description, 'image' : posting.image, 'price' : posting.price, 'availability' : posting.availability, 'area': posting.area, 'neighborhood' : posting.neighborhood})
-        return jsonify({'message': 'Postings found', 'postings': postings})
-    else:
-        return jsonify({'message' : 'Not able to fetch posting'})
+#     if posting_list :
+#         postings = []
+#         for posting in posting_list:
+#             postings.append({'title': posting.title, 'description' : posting.description, 'image' : posting.image, 'price' : posting.price, 'availability' : posting.availability, 'area': posting.area, 'neighborhood' : posting.neighborhood})
+#         return jsonify({'message': 'Postings found', 'postings': postings})
+#     else:
+#         return jsonify({'message' : 'Not able to fetch posting'})
 
-
-    
 
 if __name__ == '__main__':
     app.run(debug=True)
