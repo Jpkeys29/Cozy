@@ -6,13 +6,10 @@ import os
 load_dotenv()
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy import create_engine
-app = Flask(__name__)
-CORS(app)
 from sqlalchemy import Enum
 
 app = Flask(__name__)
 CORS(app)
-
 
 db_password = os.environ['DB_PSSWRD']
 app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+mysqlconnector://root:{db_password}@localhost/hommie1"
@@ -82,9 +79,10 @@ def check_address_db(formatted_address):
 def check_address():
     data = request.get_json()
     if data is None:
-        return jsonify({"message:" "Invalid json"})
-    # print("Received data:", data)
+        return jsonify({"message":"Invalid json"})
+    print("Received data:", data)
     formatted_address = data.get('formattedAddress')
+    print(formatted_address)
 
     if formatted_address:
         address = check_address_db(formatted_address) 
