@@ -8,9 +8,10 @@ import {
 } from "@react-google-maps/api"
 import { useNavigate, Navigate } from "react-router-dom"
 import TeamList from "./TeamList";
+import PostingSearched from "./PostingSearched";
 
 
-const libraries = ["places"]
+const libraries = ["places"];
 
 const Banner = () => {
     const [addressData, setAddressData] = useState(null);
@@ -18,7 +19,9 @@ const Banner = () => {
     const [ updatedFormattedAddres, setUpdatedFormattedAddress ] = useState('')
 
     const apiKey = process.env.REACT_APP_GOOGLEMAPS_API_KEY;
+
     const inputref = useRef(null)
+
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
@@ -30,7 +33,7 @@ const Banner = () => {
         console.log("address:", address)
 
         if (address && address.length > 0) {
-            const formattedAddress = address[0].vicinity
+            const formattedAddress = address[0].vicinity || address[0].formatted_address;
             console.log("Formatted Address:", formattedAddress);
             setUpdatedFormattedAddress(formattedAddress)
         } else {
@@ -39,8 +42,6 @@ const Banner = () => {
     }
 
     const FetchFormattedAddress = async () => {
-        console.log(updatedFormattedAddres);
-        console.log(typeof updatedFormattedAddres);
         const dataObject = {
             formattedAddress: updatedFormattedAddres,
         };
@@ -58,10 +59,9 @@ const Banner = () => {
             }
             const data = await response.json();
             console.log(data)
-            console.log(typeof data)
             setAddressData(data);
 
-            console.log('Backend response:', data)
+            // console.log('Backend response:', data)
         } catch (error) {
             console.log('Error:', error)
         }
@@ -87,15 +87,10 @@ const Banner = () => {
                                     )}
                                     <button className="btn-search m-2" onClick={FetchFormattedAddress}
                                     >Search All</button>
-                                </div>
-                                
+                                </div> 
                                 <div>
-                                    <p>
-                                        {addressData?.area}
-                                        <br />
-                                        {addressData?.neighborhood}
-                                    </p>
-                                </div>
+                                    <PostingSearched addressData={addressData} />
+                                </div>                              
                             </div>
                         </div>
                     </div>
