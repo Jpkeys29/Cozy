@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react"
-import banner from "../banner.jpg"
+import { useEffect, useState, useRef } from "react";
+import banner from "../banner.jpg";
 import { Link, json } from "react-router-dom";
 import {
     GoogleMap,
@@ -13,8 +13,8 @@ import PostingSearched from "./PostingSearched";
 
 const libraries = ["places"];
 
-const Banner = () => {
-    const [addressData, setAddressData] = useState(null);
+const Banner = ({setAddressData}) => {
+    // const [addressData, setAddressData] = useState(null);
     const [pics, setPics] = useState([])
     const [ updatedFormattedAddres, setUpdatedFormattedAddress ] = useState('')
 
@@ -89,7 +89,7 @@ const Banner = () => {
                                     >Search All</button>
                                 </div> 
                                 <div>
-                                    <PostingSearched addressData={addressData} />
+                                    {/* <PostingSearched addressData={addressData} /> */}
                                 </div>                              
                             </div>
                         </div>
