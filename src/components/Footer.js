@@ -8,7 +8,7 @@ const Footer = () => {
                     <div className="col-lg-3 col-md-6">
                         <i className="fas fa-home"></i>
                         <span className="footer-other-text d-block mt-3 mb-3">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+                            Find the rooms that fit your lifestyle in NYC.
                         </span>
                         <div className="footer-social">
                             <div className="footer-social-item"><i className="fab fa-facebook"></i></div>
@@ -16,7 +16,7 @@ const Footer = () => {
                             <div className="footer-social-item"> <i className="fab fa-instagram"></i></div>
                         </div>
                     </div>
-                    <div className="col-lg-3 col-md-6">
+                    {/* <div className="col-lg-3 col-md-6">
                         <p className="footer-title">Menu</p>
                         <ul className="footer-ul">
                             <li>Home</li>
@@ -24,7 +24,7 @@ const Footer = () => {
                             <li>About</li>
                             <li>Contact</li>
                         </ul>
-                    </div>
+                    </div> */}
                     <div className="col-lg-3 col-md-6">
                         
                     </div>
@@ -35,7 +35,7 @@ const Footer = () => {
                                 <div className="footer-info-item"><i className="fas fa-clock"></i></div> <span>08:00-18:00</span>
                             </li>
                             <li className="d-flex">
-                                <div className="footer-info-item" ><i className="fas fa-envelope"></i></div> <span>info@house.com</span>
+                                <div className="footer-info-item" ><i className="fas fa-envelope"></i></div> <span>info@roomyenyc.com</span>
                             </li>
                             <li className="d-flex">
                                 <div className="footer-info-item"><i className="fas fa-map-marker-alt"></i></div> <span>Lorem Ipsum </span>
