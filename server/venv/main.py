@@ -72,7 +72,7 @@ def get_profile(profile_id):
 def check_address_db(formatted_address):
     address = Roomie1.query.filter(
         (Roomie1.area == formatted_address) | (Roomie1.neighborhood == formatted_address)
-    ).first()
+    ).all()
     return address
 
 @app.route('/api/check_address', methods=['POST'])
@@ -85,17 +85,21 @@ def check_address():
     print(formatted_address)
 
     if formatted_address:
-        address = check_address_db(formatted_address) 
+        addresses = check_address_db(formatted_address) 
 
-        if address:
-            return jsonify({
+        if addresses:
+            results = [
+                {
                 "area": address.area,
                 "neighborhood": address.neighborhood,
                 "price": address.price,
                 "title": address.title,
                 "description": address.description,
                 "image": address.image
-            }), 200
+                }
+                for address in addresses
+            ]
+            return jsonify(results), 200
         else:
             return jsonify({"message": "Address not found"}), 404
     else:
