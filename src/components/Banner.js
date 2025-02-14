@@ -13,10 +13,10 @@ import PostingSearched from "./PostingSearched";
 
 const libraries = ["places"];
 
-const Banner = ({setAddressData}) => {
-    // const [addressData, setAddressData] = useState(null);
-    const [pics, setPics] = useState([])
-    const [ updatedFormattedAddres, setUpdatedFormattedAddress ] = useState('')
+const Banner = ({setAddressData, addressData}) => {
+    const [pics, setPics] = useState([]);
+    const [ updatedFormattedAddres, setUpdatedFormattedAddress ] = useState('');
+    const navigate = useNavigate();
 
     const apiKey = process.env.REACT_APP_GOOGLEMAPS_API_KEY;
 
@@ -58,8 +58,9 @@ const Banner = ({setAddressData}) => {
                 throw new Error('Failed to fetch address data');
             }
             const data = await response.json();
+            navigate('/posting-searched', {state:data});
             console.log(data)
-            setAddressData(data);
+            // setAddressData(data);
 
             // console.log('Backend response:', data)
         } catch (error) {

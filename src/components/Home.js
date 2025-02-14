@@ -13,10 +13,10 @@ const Home=()=>{
     return (
         <React.Fragment>
             <Banner setAddressData={setAddressData} />
-            <PostingSearched/>
+            {/* <PostingSearched/> */}
             {/* <FlatList/> */}
             {/* <BestFlatList/> */}
-            <TeamList addressData={addressData} />
+            {/* <TeamList addressData={addressData} /> */}
             <References />
         </React.Fragment>
     )
