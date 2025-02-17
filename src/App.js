@@ -15,6 +15,8 @@ import { Link, useParams } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import RenderedProfile from './components/RenderedProfile';
+import PostingSearched from './components/PostingSearched';
+import PostingDetails from './components/PostingDetails';
 
 function App() {
   console.log("auth", auth.currentUser)
@@ -34,14 +36,13 @@ function App() {
     <BrowserRouter>
       <div>
         <Header handleLogout={handleLogout} />
-
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/flat/:slug" element={<FlatDetail />}></Route>
           <Route path='/signup' element={<SignUp setUser={setUser} />} ></Route>
-          {/* <Route path='/renderedprofile' element={<RenderedProfile/>} /> */}
-          {/* <Route path="/postroom" element={<PostRoom />}></Route> */}
+          <Route path='/posting-searched' element={< PostingSearched/>} />
+          <Route path='/posting-details' element={<PostingDetails/>}  />
           <Route
             path="/postroom"
             element={
